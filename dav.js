@@ -3093,9 +3093,12 @@ var Transport = /*#__PURE__*/function () {
    * @param {dav.Credentials} credentials user authorization.
    */
   function Transport(credentials) {
+    var proxyUrl = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
     _classCallCheck(this, Transport);
 
     this.credentials = credentials || null;
+    this.proxyUrl = proxyUrl;
   }
   /**
    * @param {dav.Request} request object with request info.
@@ -3128,9 +3131,11 @@ var Basic = /*#__PURE__*/function (_Transport) {
    * @param {dav.Credentials} credentials user authorization.
    */
   function Basic(credentials) {
+    var proxyUrl = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
     _classCallCheck(this, Basic);
 
-    return _super.call(this, credentials);
+    return _super.call(this, credentials, proxyUrl);
   }
 
   _createClass(Basic, [{
@@ -3148,7 +3153,7 @@ var Basic = /*#__PURE__*/function (_Transport) {
                 onerror = request.onerror;
                 xhr = new _xmlhttprequest["default"]();
                 if (sandbox) sandbox.add(xhr);
-                xhr.open(request.method, url, true
+                xhr.open(request.method, this.proxyUrl + url, true
                 /* async */
                 );
                 auth = "Basic " + (0, _base64util.encode)(this.credentials.username + ":" + this.credentials.password);
@@ -3197,9 +3202,11 @@ var OAuth2 = /*#__PURE__*/function (_Transport2) {
   var _super2 = _createSuper(OAuth2);
 
   function OAuth2(credentials) {
+    var proxyUrl = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
     _classCallCheck(this, OAuth2);
 
-    return _super2.call(this, credentials);
+    return _super2.call(this, credentials, proxyUrl);
   }
 
   _createClass(OAuth2, [{
@@ -3225,7 +3232,7 @@ var OAuth2 = /*#__PURE__*/function (_Transport2) {
                 token = _context2.sent;
                 xhr = new _xmlhttprequest["default"]();
                 if (sandbox) sandbox.add(xhr);
-                xhr.open(request.method, url, true
+                xhr.open(request.method, this.proxyUrl + url, true
                 /* async */
                 );
                 xhr.setRequestHeader('Authorization', "Bearer ".concat(token));
@@ -3251,7 +3258,7 @@ var OAuth2 = /*#__PURE__*/function (_Transport2) {
                 this.credentials.expiration = 0; // Retry once at most.
 
                 options.retry = false;
-                return _context2.abrupt("return", this.send(request, url, options));
+                return _context2.abrupt("return", this.send(request, this.proxyUrl + url, options));
 
               case 25:
                 if (onerror) onerror(_context2.t0);
